@@ -35,13 +35,12 @@ const Weather = () => {
           } else {
             setError("");
           }
-          console.log(error);
         });
     }
   };
 
   return (
-    <div className="gap-4 flex flex-col">
+    <div className=" flex flex-col gap-16 justify-between h-full">
       <div>
         <div className="flex gap-3">
           <div className="border rounded-lg py-1 px-2 bg-slate-50">
@@ -49,10 +48,13 @@ const Weather = () => {
               type="text"
               placeholder="search"
               onChange={(e) => setName(e.target.value)}
-              className="text-black"
+              className="text-black outline-none"
             />
           </div>
-          <div className=" bg-slate-50 rounded-3xl p-1" onClick={HandleClick}>
+          <div
+            className=" bg-slate-50 rounded-3xl p-1 cursor-pointer"
+            onClick={HandleClick}
+          >
             <Search />
           </div>
         </div>
