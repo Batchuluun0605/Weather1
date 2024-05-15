@@ -4,6 +4,7 @@ import Humidity from "./Humidity";
 import Wind from "./Wind";
 import axios from "axios";
 import Search from "./Search";
+import { mockData } from "@/constant";
 
 const Weather = () => {
   const [data, setData] = useState({
@@ -11,6 +12,7 @@ const Weather = () => {
     name: "London",
     humidity: 10,
     speed: 2,
+    deskription: "Clouds",
   });
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -26,12 +28,13 @@ const Weather = () => {
             name: res.data.name,
             humidity: res.data.main.humidity,
             speed: res.data.wind.speed,
+            deskription: res.data.weather[0].main,
           });
           setError("");
         })
         .catch((err) => {
           if (err.response.status === 404) {
-            setError("Invalid Name Error");
+            setError("Улсын нэр буруу байна.");
           } else {
             setError("");
           }
@@ -39,36 +42,36 @@ const Weather = () => {
     }
   };
 
+  const img = mockData.filter((e) => String(e.conditions) === data.deskription);
   return (
-    <div className=" flex flex-col gap-16 justify-between h-full">
+    <div className=" flex flex-col  justify-between ">
       <div>
-        <div className="flex gap-3">
-          <div className="border rounded-lg py-1 px-2 bg-slate-50">
+        <div className="flex justify-between">
+          <p className="text-3xl">{data.name}</p>
+          <div className="border rounded-lg py-1 px-2 bg-slate-50 flex justify-center items-center">
             <input
               type="text"
               placeholder="search"
               onChange={(e) => setName(e.target.value)}
               className="text-black outline-none"
             />
-          </div>
-          <div
-            className=" bg-slate-50 rounded-3xl p-1 cursor-pointer"
-            onClick={HandleClick}
-          >
-            <Search />
+
+            <button
+              className=" bg-slate-50 rounded-3xl p-1 cursor-pointer"
+              onClick={(e) => HandleClick()}
+            >
+              <Search />
+            </button>
           </div>
         </div>
-        <div>
-          <p className=" text-red-500">{error}</p>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <CloudIcon />
+        <p className=" text-red-500">{error}</p>
+
+        <img src={img[0]?.img} alt="" className="w-[500px] h-[500px]" />
+        <div></div>
       </div>
       <div>
         <div className="flex text-center flex-col">
-          <p className="text-4xl">{Math.round(data.celcuis)}</p>
-          <p className="text-3xl">{data.name}</p>
+          <p className="text-4xl">{Math.round(data.celcuis)}°C</p>
         </div>
       </div>
       <div className="flex justify-between gap-10">
